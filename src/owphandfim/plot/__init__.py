@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter('ignore')
+
 from .nwmfid import plotNWMStreamflow
 from .usgs import getUSGSsitedata
 from .usgs import plotUSGSStreamflow

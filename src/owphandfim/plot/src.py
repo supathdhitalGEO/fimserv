@@ -21,7 +21,7 @@ def filterhydroID(file_path, hydro_ids, branch_ids):
     return filtered_dfs
 
 
-def plotsrc(file, hydro_ids, branch_ids, discharge_value=None):
+def plotsrc(file, hydro_ids, branch_ids, output_dir, discharge_value=None):
     data_list = filterhydroID(file, hydro_ids, branch_ids)
     plt.figure(figsize=(7, 5))
     cmap = plt.get_cmap("tab10" if len(data_list) <= 10 else "hsv")
@@ -71,7 +71,7 @@ def plotsrc(file, hydro_ids, branch_ids, discharge_value=None):
                 label=f"For discharge {discharge_value} cms, stage: {stage_at_discharge:.2f} m",
             )
 
-    plt.xlabel("Discharge (m3/s)", fontsize=14)
+    plt.xlabel("Discharge (m³/s)", fontsize=14)
     plt.ylabel("Stage (in m)", fontsize=14)
     plt.title("Synthetic Rating Curves", fontsize=16)
     plt.legend()
@@ -79,10 +79,17 @@ def plotsrc(file, hydro_ids, branch_ids, discharge_value=None):
     plt.yticks(fontsize=12)
     plt.tight_layout()
     plt.grid(True, which="both", linestyle="-", linewidth=0.3)
+    
+    #Save dir
+    plt_dir = os.path.join(output_dir, 'Plots')
+    os.makedirs(plt_dir, exist_ok=True)
+    plot_dir = os.path.join(plt_dir, f"SRC_{hydro_ids}.png")
+    plt.savefig(plot_dir, dpi = 500, bbox_inches = 'tight')
     plt.show()
 
 
 def plotSRC(huc, hydro_ids, branch_ids, discharge_value=None):
     code_dir, data_dir, output_dir = setup_directories()
+    HUC_dir = os.path.join(output_dir, f"flood_{huc}")
     hydrotable_dir = os.path.join(output_dir, f"flood_{huc}", huc, "hydrotable.csv")
-    plotsrc(hydrotable_dir, hydro_ids, branch_ids, discharge_value)
+    plotsrc(hydrotable_dir, hydro_ids, branch_ids, HUC_dir, discharge_value)

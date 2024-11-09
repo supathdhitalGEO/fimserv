@@ -8,7 +8,7 @@ from ..datadownload import setup_directories
 plt.rcParams["font.family"] = "Arial"
 
 
-def plotcomparision(data_dir_nwm, data_dir_usgs, feature_id, usgs_site):
+def plotcomparision(data_dir_nwm, data_dir_usgs, feature_id, usgs_site, output_dir):
     nwm_data = getFIDdata(data_dir_nwm, feature_id)
     usgs_data = getUSGSdata(data_dir_usgs, usgs_site)
 
@@ -38,6 +38,11 @@ def plotcomparision(data_dir_nwm, data_dir_usgs, feature_id, usgs_site):
     plt.xticks(rotation=45, fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
+    #Save dir
+    plt_dir = os.path.join(output_dir, 'Plots')
+    os.makedirs(plt_dir, exist_ok=True)
+    plot_dir = os.path.join(plt_dir, f"NWMvsUSGS_{feature_id}.png")
+    plt.savefig(plot_dir, dpi = 500, bbox_inches = 'tight')
     plt.grid(True, which="both", linestyle="-", linewidth=0.3)
     plt.show()
 
@@ -50,4 +55,5 @@ def CompareNWMnUSGSStreamflow(huc, feature_id, usgs_site):
     discharge_dir_usgs = os.path.join(
         output_dir, f"flood_{huc}", "discharge", "usgs_streamflow"
     )
-    plotcomparision(discharge_dir_nwm, discharge_dir_usgs, feature_id, usgs_site)
+    HUC_dir = os.path.join(output_dir, f"flood_{huc}")
+    plotcomparision(discharge_dir_nwm, discharge_dir_usgs, feature_id, usgs_site, HUC_dir)
