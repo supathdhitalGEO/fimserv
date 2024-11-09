@@ -1,3 +1,4 @@
 from .nwmretrospective import getNWMretrospectivedata
+from .forecasteddata import getNWMForecasteddata
 
-__all__ = ['getNWMretrospectivedata']
+__all__ = ["getNWMretrospectivedata", "getNWMForecasteddata"]

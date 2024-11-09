@@ -13,6 +13,9 @@ teehr = {git = "https://github.com/RTIInternational/teehr.git", rev = "main"}
 numpy = "1.26.0"
 pyarrow = "^14.0.1"
 utils = "^1.0.2"
+netcdf4 = "^1.7.2"
+black = "^24.10.0"
+matplotlib = "^3.9.2"
 
 [build-system]
 requires = ["poetry-core"]
