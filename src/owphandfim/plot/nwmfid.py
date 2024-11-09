@@ -19,15 +19,15 @@ def getFIDdata(data_dir, feature_id):
     return filtered_data
 
 def plotNWMStreamflowData(dischargedata, feature_ids):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 5))
     
     # Loop through the list of feature_ids and plot each one
     for feature_id in feature_ids:
         data = getFIDdata(dischargedata, feature_id)
         plt.plot(data['Date'], data['Discharge'], label=f'NWM streamflow for feature ID: {feature_id}', linewidth=2)
 
-    plt.xlabel('Date', fontsize=14)
-    plt.ylabel('Discharge', fontsize=14)
+    plt.xlabel('Date (Hourly)', fontsize=14)
+    plt.ylabel('Discharge (m3/s)', fontsize=14)
     plt.title('NWM Streamflows', fontsize=16)
     plt.legend()
     plt.xticks(rotation=45, fontsize=12)

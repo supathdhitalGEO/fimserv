@@ -8,4 +8,4 @@ fm.DownloadHUC8(huc)
 # If user wants to update the streamorder
 stream_order = [6, 5]
 
-fm.DownloadHUC8(huc, stream_order)
+# fm.DownloadHUC8(huc, stream_order)
