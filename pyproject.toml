@@ -1,10 +1,13 @@
 [tool.poetry]
 name = "owphandfim"
 version = "0.1.0"
-description = "US operational FIM"
-authors = ["Supath Dhital"]
-license = "GPv3"
+description = "Framework which is developed with the purpose of quickly generating Flood Inundation Maps (FIM) for emergency response and risk assessment. It is developed under Surface Dynamics Modeling Lab (SDML)."
+authors = ["Supath Dhital <sdhital@crimson.ua.edu>"]
+license = "GPL-3.0"
 readme = "README.md"
+maintainers = ["Supath Dhital <sdhital@crimson.ua.edu>"]
+homepage = "https://github.com/sdmlua/OperationalOWPFIM"
+repository = "https://github.com/sdmlua/OperationalOWPFIM"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
@@ -20,3 +23,4 @@ matplotlib = "^3.9.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

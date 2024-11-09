@@ -34,19 +34,25 @@ def clone_repository(code_dir):
 
 
 def download_data(huc_number, base_dir):
+    # Make output_dir an absolute path
     output_dir = os.path.join(base_dir, f"flood_{huc_number}", str(huc_number))
+
+    # Check if the directory exists, create it if not
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # For the CIROH
-    cmd = f"aws s3 sync s3://ciroh-owp-hand-fim/hand_fim_4_5_2_11/{huc_number}/ {output_dir} --no-sign-request "
-
-    # Run the AWS CLI command
+    # Run the AWS CLI command to sync data
+    cmd = f"aws s3 sync s3://ciroh-owp-hand-fim/hand_fim_4_5_2_11/{huc_number}/ {output_dir} --no-sign-request"
     os.system(cmd)
-    print(f"Data for HUC {huc_number}")
+    print(f"Data for HUC {huc_number} downloaded to {output_dir}")
 
+    # Ensure the hydrotable file exists in the expected path
     hydrotable_path = os.path.join(output_dir, "branch_ids.csv")
     fim_inputs_path = os.path.join(base_dir, f"flood_{huc_number}", "fim_inputs.csv")
+
+    # Check if the hydrotable file exists before trying to open it
+    if not os.path.exists(hydrotable_path):
+        raise FileNotFoundError(f"Missing {hydrotable_path}. Ensure data is downloaded correctly.")
 
     # Read the first row from branch_ids.csv
     with open(hydrotable_path, "r") as infile:
@@ -58,10 +64,7 @@ def download_data(huc_number, base_dir):
         writer = csv.writer(outfile)
         writer.writerow(first_row)
 
-    print(
-        f"Copied the first row of {hydrotable_path} to {fim_inputs_path} as fim_inputs.csv."
-    )
-
+    print(f"Copied the first row of {hydrotable_path} to {fim_inputs_path} as fim_inputs.csv.")
 
 def uniqueFID(hydrotable, fid_dir, stream_order=None):
     hydrotable_df = pd.read_csv(hydrotable)

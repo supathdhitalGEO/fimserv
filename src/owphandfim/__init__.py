@@ -4,9 +4,12 @@ from .runFIM import runOWPHANDFIM
 
 from .streamflowdata.forecasteddata import getNWMForecasteddata
 
-#plots
+# plots
 from .plot.nwmfid import plotNWMStreamflow
 from .plot.usgs import getUSGSsitedata
 from .plot.comparestreamflow import CompareNWMnUSGSStreamflow
 from .plot.usgs import plotUSGSStreamflow
 from .plot.src import plotSRC
+
+# subsetting
+from .FIMsubset.xycoord import subsetFIM
