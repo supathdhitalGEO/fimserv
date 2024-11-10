@@ -10,7 +10,7 @@ homepage = "https://github.com/sdmlua/OperationalOWPFIM"
 repository = "https://github.com/sdmlua/OperationalOWPFIM"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.13"
+python = ">=3.10,<3.13"
 pytest = "^8.3.3"
 teehr = {git = "https://github.com/RTIInternational/teehr.git", rev = "main"}
 numpy = "1.26.0"
@@ -19,6 +19,8 @@ utils = "^1.0.2"
 netcdf4 = "^1.7.2"
 black = "^24.10.0"
 matplotlib = "^3.9.2"
+awscli = "1.34.23"
+botocore = "1.35.23"
 
 [build-system]
 requires = ["poetry-core"]
