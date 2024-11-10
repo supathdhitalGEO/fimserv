@@ -6,13 +6,10 @@
 ![Views](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/sdmlua/OperationalOWPFIM&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=Views&edge_flat=false)
 
 
-
 ### **Flood Inundation Mapping as a Service**
 | | |
 | --- | --- |
-| <a href="https://sdml.ua.edu"><img src="https://sdml.ua.edu/wp-content/uploads/2023/01/SDML_logo_Sq_grey.png" alt="SDML Logo" width="300"></a> | This repository presents a sophisticated and user friendly approach to generate Operational flood inundation map using NOAA_OWP Height Above Nearest Drainage (HAND) method-FIM model using National Water Model retrospective and forecasted streamflow data.It is developed under Surface Dynamics Modeling Lab (SDML). |
-
-
+| <a href="https://sdml.ua.edu"><img src="https://sdml.ua.edu/wp-content/uploads/2023/01/SDML_logo_Sq_grey.png" alt="SDML Logo" width="300"></a> | This package presents a sophisticated and user friendly approach to generate Operational flood inundation map using NOAA_OWP Height Above Nearest Drainage (HAND) method-FIM model using National Water Model retrospective and forecasted streamflow data.It is developed under Surface Dynamics Modeling Lab (SDML). |
 
 
 ### **Background**
@@ -41,7 +38,11 @@ OperationalOWPFIM/
 To use this code, 
 
 ```bash
-pip install owphandfim
+#Using pip
+pip install 'owphandfim @ git+https://github.com/supathdhitalGEO/owphandfim.git'
+
+#OR add using poetry
+poetry add git+https://github.com/supathdhitalGEO/owphandfim.git
 ```
 
 Once it installed, import it like 
@@ -57,4 +58,3 @@ Then there are a lot of different modules, call it to work. For reference to run
 | | |
 | --- | --- |
 | ![alt text](https://ciroh.ua.edu/wp-content/uploads/2022/08/CIROHLogo_200x200.png) | Funding for this project was provided by the National Oceanic & Atmospheric Administration (NOAA), awarded to the Cooperative Institute for Research to Operations in Hydrology (CIROH) through the NOAA Cooperative Agreement with The University of Alabama (#Funding ID). |
-
