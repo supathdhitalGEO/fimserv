@@ -44,6 +44,7 @@ pip install 'owphandfim @ git+https://github.com/supathdhitalGEO/owphandfim.git'
 #OR add using poetry
 poetry add git+https://github.com/supathdhitalGEO/owphandfim.git
 ```
+If you get some error on installing the package using pip, that is likely due to **```Git LFS```** is not installed in your system. **[Visit here](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage?platform=mac)** to install **Git LFS** for your platform.
 
 Once it installed, import it like 
 ```bash
