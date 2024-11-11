@@ -19,7 +19,7 @@ NOAA-Office of Water Predictions (OWP) use HAND FIM model for operational flood 
 
 ```bash
 OperationalOWPFIM/
-├── docs/(contain the code code usage))
+├── docs/(contain the code usage sample notebook))
 ├── data/
 │   └── inputs/(NWM Discharge value will be saved here in a format of STH_HUC8code)
 ├── src/owphandfim/
