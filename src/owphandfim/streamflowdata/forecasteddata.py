@@ -9,61 +9,59 @@ from bs4 import BeautifulSoup
 
 from ..datadownload import setup_directories
 
-
-# Downloading the short range forecast data
 def download_nc_files(date_str, current_hour, download_dir, url_base, forecast_range):
-    forecast_type = re.sub(
-        r"(?i)shortrange|short[-\s]?range", "short_range", forecast_range
-    )
-    forecast_type = re.sub(
-        r"(?i)mediumrange|medium[-\s]?range", "medium_range-mem1", forecast_type
-    )
-    forecast_type = re.sub(
-        r"(?i)longrange|long[-\s]?range", "long_range_mem1", forecast_type
-    )
+    date_obj = datetime.strptime(date_str, "%Y%m%d")
+    start_date = datetime(2018, 9, 17)
+    end_date = datetime(2019, 6, 18)
+    
+    # Adjust forecast_type based on the date range
+    if start_date <= date_obj <= end_date:
+        forecast_type = re.sub(r"(?i)mediumrange|medium[-\s]?range", "medium_range", forecast_range)
+    else:
+        forecast_type = re.sub(r"(?i)mediumrange|medium[-\s]?range", "medium_range_mem1", forecast_range)
+    
+    forecast_type = re.sub(r"(?i)shortrange|short[-\s]?range", "short_range", forecast_type)
+    forecast_type = re.sub(r"(?i)longrange|long[-\s]?range", "long_range_mem1", forecast_type)
 
     url = f"{url_base}/nwm.{date_str}/{forecast_type}/"
 
     date_output_dir = os.path.join(download_dir, "netCDF", date_str)
     os.makedirs(date_output_dir, exist_ok=True)
 
-    # Define the pattern dynamically using current_hour for matching files
+    # Possible File patterns for each forecast type
     if forecast_type == "short_range":
-        pattern = (
-            rf"nwm\.t{current_hour:02d}z\.short_range\.channel_rt\.f\d{{3}}\.conus\.nc"
-        )
+        forecast_range_files = [f"nwm.t{current_hour:02d}z.short_range.channel_rt.f{hour:03d}.conus.nc" for hour in range(1, 18)]
+    elif forecast_type == "medium_range":
+        forecast_range_files = [f"nwm.t{current_hour:02d}z.medium_range.channel_rt.f{hour:03d}.conus.nc" for hour in range(3, 240, 3)]
     elif forecast_type == "medium_range_mem1":
-        pattern = rf"nwm\.t{current_hour:02d}z\.medium_range\.channel_rt_1\.f\d{{3}}\.conus\.nc"
+        forecast_range_files = [f"nwm.t{current_hour:02d}z.medium_range.channel_rt_1.f{hour:03d}.conus.nc" for hour in range(3, 240, 3)]
     elif forecast_type == "long_range_mem1":
-        pattern = (
-            rf"nwm\.t{current_hour:02d}z\.long_range\.channel_rt_1\.f\d{{3}}\.conus\.nc"
-        )
+        forecast_range_files = [f"nwm.t{current_hour:02d}z.long_range.channel_rt_1.f{hour:03d}.conus.nc" for hour in range(6, 720, 6)]
 
-    # Fetch webpage content and look for files matching the pattern
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    nc_files = [
-        link["href"]
-        for link in soup.find_all("a", href=True)
-        if re.search(pattern, link["href"])
-    ]
-
-    if not nc_files:
+    successful_downloads = []
+    
+    for forecast_file in forecast_range_files:
+        file_url = os.path.join(url, forecast_file)
+        file_path = os.path.join(date_output_dir, forecast_file)
+        
+        try:
+            download_public_file(file_url, file_path)
+            successful_downloads.append(forecast_file)
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to download {forecast_file}: {e}")
+    
+    if not successful_downloads:
         return False, date_output_dir
+    return True, date_output_dir
 
-    # Create a subfolder for each forecast hour
-    hour_output_dir = os.path.join(date_output_dir, f"{current_hour:02d}")
-    os.makedirs(hour_output_dir, exist_ok=True)
-
-    for nc_file in nc_files:
-        file_url = url + nc_file
-        file_path = os.path.join(hour_output_dir, nc_file)
-        file_response = requests.get(file_url)
-        with open(file_path, "wb") as f:
-            f.write(file_response.content)
-    return True, hour_output_dir
-
-
+def download_public_file(url, destination_path):
+    response = requests.get(url)
+    if response.status_code == 404:
+        return
+    response.raise_for_status()
+    with open(destination_path, 'wb') as f:
+        f.write(response.content)
+    
 # %%
 # Process netcf and get the file in CSV format and extract all feature_is's discharge data
 def process_netcdf_file(netcdf_file_path, filter_df, output_folder_path):
@@ -99,25 +97,31 @@ def main(
     data_dir,
     output_dir,
     forecast_range,
+    forecast_date=None,
+    hour=None,
     sort_by="maximum",
-    url_base="https://nomads.ncep.noaa.gov/pub/data/nccf/com/nwm/prod/",
+    url_base="https://storage.googleapis.com/national-water-model",
 ):
-
-    # Step 2: Set up current date and hour to locate the latest forecast data
-    today = datetime.utcnow().strftime("%Y%m%d")
-    current_hour = datetime.utcnow().hour
+    if not hour:
+        hour = datetime.utcnow().hour
+        
+    if forecast_date:
+        date_obj = datetime.strptime(forecast_date, "%Y-%m-%d")
+        forecast_date = date_obj.strftime("%Y%m%d")
+    else:
+        forecast_date = datetime.utcnow().strftime("%Y%m%d")
+    print(f"Downloading forecast data for {forecast_date} at {hour:02d}Z")
 
     success = False
     attempts = 0
 
-    # Step 3: Attempt to download data up to 24 times, checking back one hour at a time if needed
     while not success and attempts < 24:
         attempts += 1
         success, date_output_dir = download_nc_files(
-            today, current_hour, download_dir, url_base, forecast_range
+            forecast_date, hour, download_dir, url_base, forecast_range
         )
         if not success:
-            current_hour = (current_hour - 1) % 24
+            current_hour = (hour - 1) % 24
             if current_hour == 23:
                 today = (datetime.utcnow() - timedelta(days=1)).strftime("%Y%m%d")
 
@@ -125,13 +129,11 @@ def main(
         print("No recent forecast data found. Exiting.")
         return
 
-    # Step 4: Load the filter CSV containing the feature_ids of interest
     filter_csv_file_path = os.path.join(output_dir, output_csv_filename)
     output_folder_path = os.path.join(download_dir, "csvFiles")
     os.makedirs(output_folder_path, exist_ok=True)
     filter_df = pd.read_csv(filter_csv_file_path)
 
-    # Step 5: Process each NetCDF file in the downloaded directory
     if os.path.exists(date_output_dir):
         for root, _, files in os.walk(date_output_dir):
             for filename in files:
@@ -139,7 +141,6 @@ def main(
                     netcdf_file_path = os.path.join(root, filename)
                     process_netcdf_file(netcdf_file_path, filter_df, output_folder_path)
 
-    # Step 6: Combine all processed CSVs into a single DataFrame
     csv_directory = output_folder_path
     csv_files = [file for file in os.listdir(csv_directory) if file.endswith(".csv")]
 
@@ -154,7 +155,6 @@ def main(
         ]
     )
 
-    # Step 7: Reformat the combined data to create a table of discharge values for each feature_id
     combined_df = (
         combined_df.pivot_table(index="feature_id", values="discharge", aggfunc=list)
         .apply(pd.Series.explode)
@@ -164,8 +164,7 @@ def main(
     combined_df = (
         combined_df.groupby("feature_id")["discharge"].apply(list).reset_index()
     )
-
-    # Step 8: Efficiently Separate discharge values into individual columns for easy analysis
+    
     discharge_values = pd.DataFrame(
         combined_df["discharge"].tolist(), index=combined_df.index
     )
@@ -173,7 +172,6 @@ def main(
         f"discharge_{i+1}" for i in range(discharge_values.shape[1])
     ]
 
-    # Concatenate the discharge columns to the original DataFrame and drop the 'discharge' column
     combined_df = pd.concat(
         [combined_df.drop(columns=["discharge"]), discharge_values], axis=1
     )
@@ -199,8 +197,7 @@ def main(
     print(f"The final discharge values saved to {output_file}")
 
 
-# Short Range forecast URL
-def getNWMForecasteddata(huc, forecast_range, sort_by="maximum"):
+def getNWMForecasteddata(huc, forecast_range, forecast_date = None, hour = None, sort_by="maximum"):
     code_dir, data_dir, output_dir = setup_directories()
     download_dir = os.path.join(
         output_dir, f"flood_{huc}", "discharge", f"{forecast_range}_forecast"
@@ -208,5 +205,5 @@ def getNWMForecasteddata(huc, forecast_range, sort_by="maximum"):
     if not os.path.exists(download_dir):
         os.makedirs(download_dir)
     featureIDs = Path(output_dir, f"flood_{huc}", "feature_IDs.csv")
-    main(download_dir, featureIDs, huc, data_dir, output_dir, forecast_range, sort_by)
+    main(download_dir, featureIDs, huc, data_dir, output_dir, forecast_range, forecast_date, hour, sort_by)
     print(f"Downloading NWM forecasted data for HUC {huc}...")
