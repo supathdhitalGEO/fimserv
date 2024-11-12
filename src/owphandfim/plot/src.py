@@ -79,12 +79,12 @@ def plotsrc(file, hydro_ids, branch_ids, output_dir, discharge_value=None):
     plt.yticks(fontsize=12)
     plt.tight_layout()
     plt.grid(True, which="both", linestyle="-", linewidth=0.3)
-    
-    #Save dir
-    plt_dir = os.path.join(output_dir, 'Plots')
+
+    # Save dir
+    plt_dir = os.path.join(output_dir, "Plots")
     os.makedirs(plt_dir, exist_ok=True)
     plot_dir = os.path.join(plt_dir, f"SRC_{hydro_ids}.png")
-    plt.savefig(plot_dir, dpi = 500, bbox_inches = 'tight')
+    plt.savefig(plot_dir, dpi=500, bbox_inches="tight")
     plt.show()
 
 
