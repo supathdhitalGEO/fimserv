@@ -26,8 +26,9 @@ geemap = "^0.35.1"
 ipyleaflet = "^0.19.2"
 ipywidgets = "^8.1.5"
 localtileserver = "^0.10.5"
-
-
+tqdm = "^4.67.0"
+scipy = "^1.14.1"
+notebook = "^7.2.2"
 
 [build-system]
 requires = ["poetry-core"]
