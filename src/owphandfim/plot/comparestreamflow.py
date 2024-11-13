@@ -21,6 +21,7 @@ def plotcomparision(
         nwm_data["Discharge"],
         label=f"NWM Streamflow for {feature_id}",
         linestyle="-",
+        color="blue",
         linewidth=2,
     )
 
@@ -29,8 +30,9 @@ def plotcomparision(
         usgs_data["Date"],
         usgs_data["Discharge"],
         label=f"USGS Streamflow for {usgs_site}",
-        linestyle="-.",
-        linewidth=1.5,
+        linestyle="--",
+        color="red",
+        linewidth=2,
     )
 
     plt.xlabel("Date (Hourly)", fontsize=14)
@@ -44,8 +46,8 @@ def plotcomparision(
     plt_dir = os.path.join(output_dir, "Plots")
     os.makedirs(plt_dir, exist_ok=True)
     plot_dir = os.path.join(plt_dir, f"NWMvsUSGS_{feature_id}.png")
-    plt.savefig(plot_dir, dpi=500, bbox_inches="tight")
     plt.grid(True, which="both", linestyle="-", linewidth=0.3)
+    plt.savefig(plot_dir, dpi=500, bbox_inches="tight")
     plt.show()
 
 
