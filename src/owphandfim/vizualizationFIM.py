@@ -82,4 +82,4 @@ def vizualizeFIM(inundation_raster, huc, zoom_level):
         "0",
         "gw_catchments_reaches_filtered_addedAttributes_0.gpkg",
     )
-    FIMVizualizer(inundation_raster, HUCBoundary, zoom_level)
+    return FIMVizualizer(inundation_raster, HUCBoundary, zoom_level)
