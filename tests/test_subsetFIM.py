@@ -8,7 +8,5 @@ huc = "03020202"
 # fm.subsetFIM(location, huc, method="xy")
 
 # If user want to subset FIM from boundary
-location = (
-    "/Users/supath/Downloads/MSResearch/CNN/fimPackage/docs/subsetBoundary/boundary.gpkg"
-)
+location = "/Users/supath/Downloads/MSResearch/CNN/fimPackage/docs/subsetBoundary/boundary.gpkg"
 fm.subsetFIM(location, huc, method="boundary")

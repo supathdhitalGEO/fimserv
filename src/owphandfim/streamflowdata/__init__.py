@@ -1,5 +1,6 @@
 import warnings
-warnings.simplefilter('ignore')
+
+warnings.simplefilter("ignore")
 
 from .nwmretrospective import getNWMretrospectivedata
 from .forecasteddata import getNWMForecasteddata

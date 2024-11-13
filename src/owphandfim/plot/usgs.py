@@ -53,7 +53,7 @@ def plotNWMStreamflowData(dischargedata, usgs_sites, output_dir, start_date, end
 
     plt.xlabel("Date (Hourly)", fontsize=14)
     plt.ylabel("Discharge (m³/s)", fontsize=14)
-    plt.title("USGS Streamflows", fontsize=16)
+    plt.title("USGS hourly streamflow", fontsize=16)
     plt.legend()
     plt.xticks(rotation=45, fontsize=12)
     plt.yticks(fontsize=12)

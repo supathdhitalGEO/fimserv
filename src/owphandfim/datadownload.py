@@ -34,35 +34,38 @@ def clone_repository(code_dir):
 
 
 def download_data(huc_number, base_dir):
-    output_dir = os.path.join(base_dir, f'flood_{huc_number}', str(huc_number))
+    output_dir = os.path.join(base_dir, f"flood_{huc_number}", str(huc_number))
 
     # Create the directory structure if it doesn't exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    #For the CIROH
+    # For the CIROH
     cmd = f"aws s3 sync s3://ciroh-owp-hand-fim/hand_fim_4_5_2_11/{huc_number}/ {output_dir} --no-sign-request "
-    
+
     # Run the AWS CLI command
     os.system(cmd)
     print(f"Data for HUC {huc_number}")
 
-    #Now copying the hydrotable.csv to the outside of directory as fim_inputs.csv
-    hydrotable_path = os.path.join(output_dir, 'branch_ids.csv')
-    fim_inputs_path = os.path.join(base_dir, f'flood_{huc_number}', 'fim_inputs.csv')
-    
+    # Now copying the hydrotable.csv to the outside of directory as fim_inputs.csv
+    hydrotable_path = os.path.join(output_dir, "branch_ids.csv")
+    fim_inputs_path = os.path.join(base_dir, f"flood_{huc_number}", "fim_inputs.csv")
+
     # Read the first row from branch_ids.csv
-    with open(hydrotable_path, 'r') as infile:
+    with open(hydrotable_path, "r") as infile:
         reader = csv.reader(infile)
         first_row = next(reader)  # Get the first row
 
     # Write the first row to fim_inputs.csv
-    with open(fim_inputs_path, 'w', newline='') as outfile:
+    with open(fim_inputs_path, "w", newline="") as outfile:
         writer = csv.writer(outfile)
         writer.writerow(first_row)
 
-    print(f"Copied the first row of {hydrotable_path} to {fim_inputs_path} as fim_inputs.csv.")
-    
+    print(
+        f"Copied the first row of {hydrotable_path} to {fim_inputs_path} as fim_inputs.csv."
+    )
+
+
 def uniqueFID(hydrotable, fid_dir, stream_order=None):
     hydrotable_df = pd.read_csv(hydrotable)
     if stream_order:
@@ -91,11 +94,12 @@ def EnvFile(code_dir):
     with open(env_dir, "w") as f:
         f.write(env_content)
 
+
 def DownloadHUC8(huc, stream_order=None):
     code_dir, data_dir, output_dir = setup_directories()
     clone_repository(code_dir)
-    
-    #if huc is not str: 
+
+    # if huc is not str:
     huc = str(huc)
     download_data(huc, output_dir)
     EnvFile(code_dir)
