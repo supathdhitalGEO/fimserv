@@ -12,9 +12,9 @@ repository = "https://github.com/sdmlua/OperationalOWPFIM"
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 pytest = "^8.3.3"
-teehr = {git = "https://github.com/RTIInternational/teehr.git", rev = "main"}
+teehr = {git = "https://github.com/RTIInternational/teehr.git", rev = "v0.3.28"}
 numpy = "1.26.0"
-pyarrow = "^15.0.0"
+pyarrow = "^14.0.0"
 utils = "^1.0.2"
 netcdf4 = "1.6.5"
 matplotlib = "^3.9.2"
