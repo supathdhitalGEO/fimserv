@@ -47,7 +47,7 @@ def FIMVizualizer(raster_path, catchment_gpkg, zoom_level):
     # Binary Raster
     Map.add_raster(
         new_raster_path,
-        colormap="Blues",
+        colormap="cool",
         layer_name="Flood Inundation Extent",
         nodata=0,
     )
@@ -59,7 +59,7 @@ def FIMVizualizer(raster_path, catchment_gpkg, zoom_level):
     legend_html = """
     <div style="font-size: 16px; line-height: 1.5;">
         <strong>Legend</strong><br>
-        <div><span style="display:inline-block; width: 25px; height: 15px; background-color: #1c83eb; border: 1px solid #000;"></span>FIM Extent</div>
+        <div><span style="display:inline-block; width: 25px; height: 15px; background-color: purple; border: 1px solid #000;"></span>FIM Extent</div>
         <div><span style="display:inline-block; width: 25px; height: 15px; border: 2px dashed red; margin-right: 5px;"></span>HUC8  Boundary</div>
     </div>
     """
