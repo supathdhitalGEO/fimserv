@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "owphandfim"
-version = "0.1.0"
+name = "fimserv"
+version = "0.1.5"
 description = "Framework which is developed with the purpose of quickly generating Flood Inundation Maps (FIM) for emergency response and risk assessment. It is developed under Surface Dynamics Modeling Lab (SDML)."
 authors = ["Supath Dhital <sdhital@crimson.ua.edu>"]
 license = "GPL-3.0"
