@@ -14,14 +14,14 @@ def plotcomparision(
     nwm_data = getFIDdata(data_dir_nwm, feature_id, start_date, end_date)
     usgs_data = getUSGSdata(data_dir_usgs, usgs_site, start_date, end_date)
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(6, 4))
     # Plot NWM data with solid line
     plt.plot(
         nwm_data["Date"],
         nwm_data["Discharge"],
-        label=f"NWM Streamflow for {feature_id}",
-        linestyle="-",
-        color="blue",
+        label=f"NWM Streamflow of feature ID {feature_id}",
+        linestyle='solid',
+        color="#167693",
         linewidth=2,
     )
 
@@ -29,15 +29,15 @@ def plotcomparision(
     plt.plot(
         usgs_data["Date"],
         usgs_data["Discharge"],
-        label=f"USGS Streamflow for {usgs_site}",
-        linestyle="--",
-        color="red",
+        label=f"USGS Streamflow of gauged site {usgs_site}",
+        linestyle='dashed',
+        color="#BF4037",
         linewidth=2,
     )
 
     plt.xlabel("Date (Hourly)", fontsize=14)
-    plt.ylabel("Discharge (m3/s)", fontsize=14)
-    plt.title("Discharge Comparison: NWM vs USGS", fontsize=16)
+    plt.ylabel("Discharge (m³/s)", fontsize=14)
+    # plt.title(f"Discharge Comparison on {usgs_site}", fontsize=16)
     plt.legend()
     plt.xticks(rotation=45, fontsize=12)
     plt.yticks(fontsize=12)
@@ -45,7 +45,7 @@ def plotcomparision(
     # Save dir
     plt_dir = os.path.join(output_dir, "Plots")
     os.makedirs(plt_dir, exist_ok=True)
-    plot_dir = os.path.join(plt_dir, f"NWMvsUSGS_{feature_id}.png")
+    plot_dir = os.path.join(plt_dir, f"NWMvsUSGS_{usgs_site}.png")
     plt.grid(True, which="both", linestyle="-", linewidth=0.3)
     plt.savefig(plot_dir, dpi=500, bbox_inches="tight")
     plt.show()

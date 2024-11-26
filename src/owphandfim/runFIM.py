@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from .datadownload import setup_directories
 
+
 def runfim(code_dir, output_dir, HUC_code, data_dir):
     original_dir = os.getcwd()
     try:

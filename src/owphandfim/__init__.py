@@ -15,8 +15,15 @@ from .plot.comparestreamflow import CompareNWMnUSGSStreamflow
 from .plot.usgs import plotUSGSStreamflow
 from .plot.src import plotSRC
 
+#For table
+from .plot.usgsandfid import GetUSGSIDandCorrFID
+
 # subsetting
 from .FIMsubset.xycoord import subsetFIM
 
 # Fim visualization
 from .vizualizationFIM import vizualizeFIM
+
+
+#Statistics
+from .statistics.calculatestatistics import CalculateStatistics
