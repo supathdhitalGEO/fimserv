@@ -39,7 +39,7 @@ To use this code,
 
 ```bash
 #Using pip
-pip install 'fimserv @ git+https://github.com/supathdhitalGEO/owphandfim.git'
+pip install 'fimserv @ git+https://github.com/supathdhitalGEO/fimserv.git'
 
 #OR add using poetry
 poetry add git+https://github.com/supathdhitalGEO/fimserv.git
