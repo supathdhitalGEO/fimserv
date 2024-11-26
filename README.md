@@ -39,10 +39,10 @@ To use this code,
 
 ```bash
 #Using pip
-pip install 'owphandfim @ git+https://github.com/supathdhitalGEO/owphandfim.git'
+pip install 'fimserv @ git+https://github.com/supathdhitalGEO/owphandfim.git'
 
 #OR add using poetry
-poetry add git+https://github.com/supathdhitalGEO/owphandfim.git
+poetry add git+https://github.com/supathdhitalGEO/fimserv.git
 ```
 
 Once it installed, import it like 
