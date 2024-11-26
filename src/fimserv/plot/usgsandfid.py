@@ -25,3 +25,4 @@ def GetUSGSIDandCorrFID(huc):
     table = usgsandfid(gpkg_file_path)
     print(f"***USGS gauge station ID and corresponding feature ID for HUC {huc}***")
     display_table(table)
+    return table

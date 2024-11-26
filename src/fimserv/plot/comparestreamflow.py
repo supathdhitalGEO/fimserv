@@ -14,7 +14,7 @@ def plotcomparision(
     nwm_data = getFIDdata(data_dir_nwm, feature_id, start_date, end_date)
     usgs_data = getUSGSdata(data_dir_usgs, usgs_site, start_date, end_date)
 
-    plt.figure(figsize=(6, 4))
+    plt.figure(figsize=(10, 5))
     # Plot NWM data with solid line
     plt.plot(
         nwm_data["Date"],
@@ -37,7 +37,7 @@ def plotcomparision(
 
     plt.xlabel("Date (Hourly)", fontsize=14)
     plt.ylabel("Discharge (m³/s)", fontsize=14)
-    # plt.title(f"Discharge Comparison on {usgs_site}", fontsize=16)
+    plt.title(f"Discharge comparison between USGS and NWM streamflow", fontsize=16)
     plt.legend()
     plt.xticks(rotation=45, fontsize=12)
     plt.yticks(fontsize=12)
